@@ -107,12 +107,12 @@ void pq_insert(struct pq* pq, void* item, int priority) {
   dynarray_insert(pq->heap, -1, new_pq_elem);
 
   int size = dynarray_size(pq->heap);
-  int index = size - 1
+  int index = size - 1;
   int parent_index = (index - 1) / 2;
 
   while(index != 0)
   {
-    if(dynarray_get(index)->priority > dynarray_get(parent_index)->prority)
+    if(dynarray_get(pq->, index)->priority > dynarray_get(pq->heap, parent_index)->prority)
     {
       struct pq_elem *parent_temp = dynarray_get(pq->heap, parent_index);
       struct pq_elem *index_temp = dynarray_get(pq->heap, index);
@@ -179,24 +179,46 @@ void* pq_remove_first(struct pq* pq) {
   int right_child = 0;
   int size = dynarray_size(pq->heap);
   int min_child = 0;
+  int min_child_priority = 0;
+  int index_priority = 0;
+  int done = 0;
+  struct pq_elem *temp;
   if(dynarray_size(pq->heap) != 0)
   {
     left_child = index * 2 + 1;
-    right_child = index * 2 +2;
-    if(left_child >= size && right_child >= size)
+    right_child = index * 2 + 2;
+    while(!(left_child >= size && right_child >= size) && done == 0)
     {
-      break;
-    } 
-    else if (left_child >= size)
-    {
-      min_child = right_child;
-    } 
-    else if (right_child >= size)
-    {
-      min_child = left_child;
+      if (left_child >= size)
+      {
+        min_child = right_child;
+      } 
+      else if (right_child >= size)
+      {
+        min_child = left_child;
+      }
+      else if (dynarray_get(pq->heap, left_child)->priority < dynarray_get(pq->heap, right_child)->priority)
+      {
+        min_child = left_child;
+      }
+      else
+      {
+        min_child = right_child;
+      }
+      index_priority = dynarray_get(pq->heap, index)->priority;
+      min_child_priority = dynarray_get(pq->heap, min_child)->priority;
+      if(min_child_priority < index_priority)
+      {
+        temp = dynarray_get(pq->heap, index);
+        dynarray_set(pq->heap, index, dynarray_get(pq->heap, min_child));
+        dynarray_set(pq->heap, min_child, temp);
+      } else {
+        done = 1;
+      }
+      index = min_child
+      left_child = index * 2 + 1;
+      right_child = index * 2 +2;
     }
-    else if (right_child)
-    index = min_child
   }
   /*
    * Return the extracted item, if the element taken out of the priority
