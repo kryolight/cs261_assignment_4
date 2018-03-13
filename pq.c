@@ -100,7 +100,28 @@ void pq_insert(struct pq* pq, void* item, int priority) {
    * the struct pq_elems in the heap array (i.e. by comparing the
    * elem->priority values).
    */
+  struct pq_elem *new_pq_elem = malloc(sizeof(struct pq_elem));
+  new_pq_elem->priority = priority;
+  new_pq_elem->item = item;
 
+  dynarray_insert(pq->heap, -1, new_pq_elem);
+
+  int size = dynarray_size(pq->heap);
+  int index = size - 1
+  int parent_index = (index - 1) / 2;
+
+  while(index != 0)
+  {
+    if(dynarray_get(index)->priority > dynarray_get(parent_index)->prority)
+    {
+      struct pq_elem *parent_temp = dynarray_get(pq->heap, parent_index);
+      struct pq_elem *index_temp = dynarray_get(pq->heap, index);
+      dynarray_set(pq->heap, parent_index, index_temp);
+      dynarray_set(pq->heap, index, parent_temp);
+    }
+    index = (index - 1) / 2;
+    parent_index = (index - 1) / 2;
+  }
 }
 
 
@@ -114,6 +135,7 @@ void* pq_first(struct pq* pq) {
   assert(pq);
   assert(dynarray_size(pq->heap) > 0);
   /* FIXME: Complete this function */
+  return(dynarray_get(pq->heap, 0)->item);
 }
 
 
@@ -133,13 +155,16 @@ void* pq_remove_first(struct pq* pq) {
    * element (i.e. the one with the lowest priority value), and store the
    * value there in first_elem.
    */
-
+  void* retval = dynarray_get(pq->heap, 0)->item;
   /*
    * Replace the highest-priority element with the appropriate one from within
    * the heap array.  Remove that replacement element from the array after
    * copying its value to the location of the old highest-priority element..
    */
-
+  free(dynarray_get(pq->heap, 0));
+  void pq_elem *last_pq_elem = dynarray_get(pq->heap, -1);
+  dynarray_set(pq->heap, 0, last_pq_elem);
+  dynarray_remove(pq->heap, -1);
   /*
    * Restore the heap so that it has the property that every node's priority
    * value is less than the priority values of its children.  This can be
@@ -149,9 +174,33 @@ void* pq_remove_first(struct pq* pq) {
    * array (i.e. by comparing the elem->priority values).  It may be helpful
    * to write a helper function to accomplish this percolation down.
    */
-
+  int index = 0;
+  int left_child = 0;
+  int right_child = 0;
+  int size = dynarray_size(pq->heap);
+  int min_child = 0;
+  if(dynarray_size(pq->heap) != 0)
+  {
+    left_child = index * 2 + 1;
+    right_child = index * 2 +2;
+    if(left_child >= size && right_child >= size)
+    {
+      break;
+    } 
+    else if (left_child >= size)
+    {
+      min_child = right_child;
+    } 
+    else if (right_child >= size)
+    {
+      min_child = left_child;
+    }
+    else if (right_child)
+    index = min_child
+  }
   /*
    * Return the extracted item, if the element taken out of the priority
    * queue is not NULL.
    */
+  return retval;
 }
