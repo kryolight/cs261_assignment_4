@@ -112,7 +112,7 @@ void pq_insert(struct pq* pq, void* item, int priority) {
 
   while(index != 0)
   {
-    if((dynarray_get(pq->heap, index))->priority > (dynarray_get(pq->heap, parent_index))->priority)
+    if(dynarray_get(pq->heap, index)->priority > dynarray_get(pq->heap, parent_index)->priority)
     {
       struct pq_elem *parent_temp = dynarray_get(pq->heap, parent_index);
       struct pq_elem *index_temp = dynarray_get(pq->heap, index);
