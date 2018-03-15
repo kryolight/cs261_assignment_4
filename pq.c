@@ -112,7 +112,7 @@ void pq_insert(struct pq* pq, void* item, int priority) {
 
   while(index != 0)
   {
-    if(dynarray_get(pq->, index)->priority > dynarray_get(pq->heap, parent_index)->prority)
+    if(dynarray_get(pq->heap, index)->priority > dynarray_get(pq->heap, parent_index)->prority)
     {
       struct pq_elem *parent_temp = dynarray_get(pq->heap, parent_index);
       struct pq_elem *index_temp = dynarray_get(pq->heap, index);
@@ -162,7 +162,7 @@ void* pq_remove_first(struct pq* pq) {
    * copying its value to the location of the old highest-priority element..
    */
   free(dynarray_get(pq->heap, 0));
-  void pq_elem *last_pq_elem = dynarray_get(pq->heap, -1);
+  struct pq_elem *last_pq_elem = dynarray_get(pq->heap, -1);
   dynarray_set(pq->heap, 0, last_pq_elem);
   dynarray_remove(pq->heap, -1);
   /*
