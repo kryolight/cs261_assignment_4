@@ -215,7 +215,7 @@ void* pq_remove_first(struct pq* pq) {
       } else {
         done = 1;
       }
-      index = min_child
+      index = min_child;
       left_child = index * 2 + 1;
       right_child = index * 2 +2;
     }
