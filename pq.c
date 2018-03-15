@@ -112,7 +112,7 @@ void pq_insert(struct pq* pq, void* item, int priority) {
 
   while(index != 0)
   {
-    if(dynarray_get(pq->heap, index)->priority > dynarray_get(pq->heap, parent_index)->priority)
+    if(((struct pq_elem *)dynarray_get(pq->heap, index))->priority > ((struct pq_elem *)dynarray_get(pq->heap, parent_index))->priority)
     {
       struct pq_elem *parent_temp = dynarray_get(pq->heap, parent_index);
       struct pq_elem *index_temp = dynarray_get(pq->heap, index);
@@ -135,7 +135,7 @@ void* pq_first(struct pq* pq) {
   assert(pq);
   assert(dynarray_size(pq->heap) > 0);
   /* FIXME: Complete this function */
-  return(dynarray_get(pq->heap, 0)->item);
+  return(((struct pq_elem *)dynarray_get(pq->heap, 0))->item);
 }
 
 
@@ -155,7 +155,7 @@ void* pq_remove_first(struct pq* pq) {
    * element (i.e. the one with the lowest priority value), and store the
    * value there in first_elem.
    */
-  void* retval = dynarray_get(pq->heap, 0)->item;
+  void* retval = ((struct pq_elem *)dynarray_get(pq->heap, 0))->item;
   /*
    * Replace the highest-priority element with the appropriate one from within
    * the heap array.  Remove that replacement element from the array after
@@ -197,7 +197,7 @@ void* pq_remove_first(struct pq* pq) {
       {
         min_child = left_child;
       }
-      else if (dynarray_get(pq->heap, left_child)->priority < dynarray_get(pq->heap, right_child)->priority)
+      else if (((struct pq_elem *)dynarray_get(pq->heap, left_child))->priority < ((struct pq_elem *)dynarray_get(pq->heap, right_child))->priority)
       {
         min_child = left_child;
       }
@@ -205,8 +205,8 @@ void* pq_remove_first(struct pq* pq) {
       {
         min_child = right_child;
       }
-      index_priority = dynarray_get(pq->heap, index)->priority;
-      min_child_priority = dynarray_get(pq->heap, min_child)->priority;
+      index_priority = ((struct pq_elem *)dynarray_get(pq->heap, index))->priority;
+      min_child_priority = ((struct pq_elem *)dynarray_get(pq->heap, min_child))->priority;
       if(min_child_priority < index_priority)
       {
         temp = dynarray_get(pq->heap, index);
